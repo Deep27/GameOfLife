@@ -9,7 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.romanso.gameoflife.R;
-import com.romanso.gameoflife.logic.GameEngine;
+import com.romanso.gameoflife.game.GameEngine;
 import com.romanso.gameoflife.view.FieldView;
 
 public class FieldFragment extends Fragment {

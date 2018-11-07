@@ -7,21 +7,27 @@ import android.graphics.Paint;
 import android.graphics.Rect;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
+import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 
 import com.romanso.gameoflife.fragment.FieldFragment;
-import com.romanso.gameoflife.logic.GameEngine;
+import com.romanso.gameoflife.game.GameEngine;
 
 public class FieldView extends View {
 
-    private static final int LINE_THICKNESS = 1;
+    private static final String TAG = FieldView.class.getName();
 
-    private final int fFieldSize = 20;
-    private final int fCellSize = 5;
+    private static final int LINE_THICKNESS = 1;
+    private static final int FIELD_SIZE = 20;
+
+    private int mScreenWidth;
+    private int mScreenHeight;
+    private int mCellSize;
 
     private int mWidth, mHeight;
-    private Paint mGridPaint, mTakenPaint, mFreePaint;
+    private Paint mGridPaint;
     private FieldFragment mFieldFragment;
     private GameEngine mGameEngine;
 
@@ -31,6 +37,8 @@ public class FieldView extends View {
 
     public FieldView(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
+
+
         mGridPaint = new Paint();
         mGridPaint.setColor(Color.rgb(0, 0, 0));
         mGridPaint.setStrokeWidth(LINE_THICKNESS);
@@ -57,6 +65,18 @@ public class FieldView extends View {
 
     public void setFieldFragment(FieldFragment fieldFragment) {
         mFieldFragment = fieldFragment;
+
+        DisplayMetrics dm = new DisplayMetrics();
+        mFieldFragment.getActivity().getWindowManager().getDefaultDisplay().getMetrics(dm);
+        mScreenHeight = dm.heightPixels;
+        mScreenWidth = dm.widthPixels;
+
+        mCellSize = mScreenHeight < mScreenWidth
+                ? mScreenHeight / FIELD_SIZE
+                : mScreenWidth / FIELD_SIZE;
+
+        Log.d(TAG,  String.format("Screen width: %d\nScreen height: %d\nCells: %d\nCell size: %d",
+                mScreenWidth, mScreenHeight, FIELD_SIZE, mCellSize));
     }
 
     public void setGameEngine(GameEngine gameEngine) {
@@ -64,6 +84,21 @@ public class FieldView extends View {
     }
 
     private void drawField(Canvas canvas) {
-        canvas.drawRect(100, 100, 200, 200, mGridPaint);
+
+        // one pixel to see lines close to screen border
+        int lOffset = 1;
+        int tOffset = 1;
+
+        Rect rect = new Rect();
+
+        for (int i = 0; i < FIELD_SIZE; i++) {
+            for (int j = 0; j < FIELD_SIZE; j++) {
+                rect.set(lOffset, tOffset, lOffset + mCellSize, tOffset + mCellSize);
+                canvas.drawRect(rect, mGridPaint);
+                lOffset += mCellSize;
+            }
+            lOffset = 1;
+            tOffset += mCellSize;
+        }
     }
 }
