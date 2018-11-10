@@ -9,12 +9,7 @@ import java.util.ArrayList;
 
 import static org.junit.Assert.*;
 
-/**
- * Example local unit test, which will execute on the development machine (host).
- *
- * @see <a href="http://d.android.com/tools/testing">Testing documentation</a>
- */
-public class ToroidTest {
+public class ToroidSetByXTest {
 
     private Toroid<Integer> mToroid;
 
@@ -22,17 +17,19 @@ public class ToroidTest {
     public void setUp() {
 
         mToroid = new Toroid<>(Integer.class, 5, 3);
-        mToroid.setYData(0, 1, 2, 3, 4, 5);
-        mToroid.setYData(1, 6, 7, 8, 9, 10);
-        mToroid.setYData(2, 11, 12, 13, 14, 15);
-        System.out.println(mToroid);
+        mToroid.setXData(0, 1, 2, 3);
+        mToroid.setXData(1, 4, 5, 6);
+        mToroid.setXData(2, 7, 8, 9);
+        mToroid.setXData(3, 10, 11, 12);
+        mToroid.setXData(4, 13, 14, 15);
+        System.out.println("Toroid set by X:\n" + mToroid);
     }
 
     @Test
     public void testGetY2() {
 
         ArrayList<Integer> testArray = new ArrayList<Integer>(5) {{
-            add(11); add(12); add(13); add(14); add(15);
+            add(3); add(6); add(9); add(12); add(15);
         }};
         ArrayList<Integer> actualArray = mToroid.getYData(2);
 
@@ -46,7 +43,7 @@ public class ToroidTest {
     public void testGetX3() {
 
         ArrayList<Integer> testArray = new ArrayList<Integer>(3) {{
-            add(4); add(9); add(14);
+            add(10); add(11); add(12);
         }};
         ArrayList<Integer> actualArray = mToroid.getXData(3);
 
@@ -61,7 +58,7 @@ public class ToroidTest {
 
         int actualData = mToroid.get(2, 3);
         System.out.println("Toroid[2][3]: " + actualData);
-        assertEquals(actualData, 14);
+        assertEquals(actualData, 12);
     }
 
     @Test
