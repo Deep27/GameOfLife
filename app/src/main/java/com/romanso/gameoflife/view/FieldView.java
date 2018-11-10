@@ -85,7 +85,7 @@ public class FieldView extends View {
 
     private void drawField(Canvas canvas) {
 
-        // one pixel to see lines close to screen border
+        // one unit to see lines close to screen border
         int lOffset = 1;
         int tOffset = 1;
 
