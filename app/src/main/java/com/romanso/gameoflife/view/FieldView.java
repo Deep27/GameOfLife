@@ -1,5 +1,6 @@
 package com.romanso.gameoflife.view;
 
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -14,6 +15,7 @@ import android.view.View;
 
 import com.romanso.gameoflife.fragment.FieldFragment;
 import com.romanso.gameoflife.game.GameEngine;
+import com.romanso.gameoflife.game.GameState;
 
 public class FieldView extends View {
 
@@ -28,6 +30,7 @@ public class FieldView extends View {
 
     private int mWidth, mHeight;
     private Paint mGridPaint;
+    private Paint mCellPaint;
     private FieldFragment mFieldFragment;
     private GameEngine mGameEngine;
 
@@ -38,15 +41,25 @@ public class FieldView extends View {
     public FieldView(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
 
-
         mGridPaint = new Paint();
         mGridPaint.setColor(Color.rgb(0, 0, 0));
         mGridPaint.setStrokeWidth(LINE_THICKNESS);
         mGridPaint.setStyle(Paint.Style.STROKE);
+
+        mCellPaint = new Paint();
+        mCellPaint.setColor(Color.rgb(127, 127, 127));
+        mCellPaint.setStrokeWidth(LINE_THICKNESS);
     }
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
+
+        if (mGameEngine.getGameState().equals(GameState.INITIALIZING)) {
+            if (event.getAction() == MotionEvent.ACTION_DOWN) {
+//                invalidate();
+            }
+        }
+
         return super.onTouchEvent(event);
     }
 
@@ -61,13 +74,20 @@ public class FieldView extends View {
     @Override
     protected void onDraw(Canvas canvas) {
         drawField(canvas);
+        drawCells(canvas);
+        invalidate();
     }
 
     public void setFieldFragment(FieldFragment fieldFragment) {
         mFieldFragment = fieldFragment;
 
         DisplayMetrics dm = new DisplayMetrics();
-        mFieldFragment.getActivity().getWindowManager().getDefaultDisplay().getMetrics(dm);
+        Activity parentActivity = mFieldFragment.getActivity();
+        if (parentActivity != null) {
+            mFieldFragment.getActivity().getWindowManager().getDefaultDisplay().getMetrics(dm);
+        } else {
+            throw new IllegalStateException("Parent activity of " + this.getClass().getName() + " is null!");
+        }
         mScreenHeight = dm.heightPixels;
         mScreenWidth = dm.widthPixels;
 
@@ -100,5 +120,26 @@ public class FieldView extends View {
             lOffset = 1;
             tOffset += mCellSize;
         }
+    }
+
+    private void drawCells(Canvas canvas) {
+        for (int i = 0; i < mGameEngine.getYSize(); i++) {
+            for (int j = 0; j < mGameEngine.getXSize(); j++) {
+                if (mGameEngine.isCellAlive(i, j)) {
+                    drawCell(canvas, i, j);
+                }
+            }
+        }
+    }
+
+    private void drawCell(Canvas canvas, int y, int x) {
+
+        Rect rect = new Rect();
+
+        int lOffset = 1 + mCellSize * x;
+        int tOffset = 1 + mCellSize * y;
+
+        rect.set(lOffset, tOffset, lOffset + mCellSize - 1, tOffset + mCellSize - 1);
+        canvas.drawRect(rect, mCellPaint);
     }
 }

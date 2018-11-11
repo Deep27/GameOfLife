@@ -1,4 +1,4 @@
-package com.romanso.gameoflife.game;
+package com.romanso.gameoflife.game.cell;
 
 public abstract class Cell {
 

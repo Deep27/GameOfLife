@@ -9,7 +9,9 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.romanso.gameoflife.R;
+import com.romanso.gameoflife.asynctask.GameStepWaiterTask;
 import com.romanso.gameoflife.game.GameEngine;
+import com.romanso.gameoflife.game.GameState;
 import com.romanso.gameoflife.view.FieldView;
 
 public class FieldFragment extends Fragment {
@@ -29,8 +31,12 @@ public class FieldFragment extends Fragment {
 
         mFieldView = getView().findViewById(R.id.field_fieldview);
         mGameEngine = new GameEngine(20, 20);
+        mGameEngine.setGameState(GameState.STARTED);
 
         mFieldView.setGameEngine(mGameEngine);
         mFieldView.setFieldFragment(this);
+
+        GameStepWaiterTask gameStepWaiterTask = new GameStepWaiterTask();
+        gameStepWaiterTask.execute(mGameEngine);
     }
 }

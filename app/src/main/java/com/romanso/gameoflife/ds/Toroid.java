@@ -31,7 +31,7 @@ public class Toroid<D> {
         return sb.toString();
     }
 
-    public void set(int x, int y, D data) {
+    public void set(int y, int x, D data) {
         mData[y % mData.length][x % mData[0].length] = data;
     }
 
@@ -94,6 +94,12 @@ public class Toroid<D> {
 
     @SuppressWarnings("unchecked")
     public D get(int y, int x) {
+        if (y < 0) {
+            y = mData.length + y;
+        }
+        if (x < 0) {
+            x = mData[0].length + x;
+        }
         Object data = mData[y % mData.length][x % mData[0].length];
         return (D) data;
     }
