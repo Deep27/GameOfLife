@@ -28,7 +28,7 @@ public class FieldFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         mFieldView = getView().findViewById(R.id.field_fieldview);
-        mGameEngine = new GameEngine();
+        mGameEngine = new GameEngine(20, 20);
 
         mFieldView.setGameEngine(mGameEngine);
         mFieldView.setFieldFragment(this);

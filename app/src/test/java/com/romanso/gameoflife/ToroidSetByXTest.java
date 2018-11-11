@@ -16,7 +16,7 @@ public class ToroidSetByXTest {
     @Before
     public void setUp() {
 
-        mToroid = new Toroid<>(Integer.class, 5, 3);
+        mToroid = new Toroid<>(5, 3);
         mToroid.setXData(0, 1, 2, 3);
         mToroid.setXData(1, 4, 5, 6);
         mToroid.setXData(2, 7, 8, 9);

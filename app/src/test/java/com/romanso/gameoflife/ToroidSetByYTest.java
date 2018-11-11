@@ -16,7 +16,7 @@ public class ToroidSetByYTest {
     @Before
     public void setUp() {
 
-        mToroid = new Toroid<>(Integer.class, 5, 3);
+        mToroid = new Toroid<>(5, 3);
         mToroid.setYData(0, 1, 2, 3, 4, 5);
         mToroid.setYData(1, 6, 7, 8, 9, 10);
         mToroid.setYData(2, 11, 12, 13, 14, 15);
