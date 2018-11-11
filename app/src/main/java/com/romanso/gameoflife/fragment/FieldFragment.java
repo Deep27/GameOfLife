@@ -30,7 +30,7 @@ public class FieldFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         mFieldView = getView().findViewById(R.id.field_fieldview);
-        mGameEngine = new GameEngine(20, 20);
+        mGameEngine = new GameEngine(60);
         mGameEngine.setGameState(GameState.STARTED);
 
         mFieldView.setGameEngine(mGameEngine);

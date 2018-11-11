@@ -2,6 +2,7 @@ package com.romanso.gameoflife.view;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -13,6 +14,7 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 
+import com.romanso.gameoflife.R;
 import com.romanso.gameoflife.fragment.FieldFragment;
 import com.romanso.gameoflife.game.GameEngine;
 import com.romanso.gameoflife.game.GameState;
@@ -22,11 +24,11 @@ public class FieldView extends View {
     private static final String TAG = FieldView.class.getName();
 
     private static final int LINE_THICKNESS = 1;
-    private static final int FIELD_SIZE = 20;
 
     private int mScreenWidth;
     private int mScreenHeight;
     private int mCellSize;
+    private int mFieldSize;
 
     private int mWidth, mHeight;
     private Paint mGridPaint;
@@ -40,6 +42,10 @@ public class FieldView extends View {
 
     public FieldView(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
+
+        TypedArray a = context.getTheme().obtainStyledAttributes(attrs, R.styleable.FieldView, 0, 0);
+
+        mFieldSize = a.getInteger(R.styleable.FieldView_size, 20);
 
         mGridPaint = new Paint();
         mGridPaint.setColor(Color.rgb(0, 0, 0));
@@ -92,11 +98,11 @@ public class FieldView extends View {
         mScreenWidth = dm.widthPixels;
 
         mCellSize = mScreenHeight < mScreenWidth
-                ? mScreenHeight / FIELD_SIZE
-                : mScreenWidth / FIELD_SIZE;
+                ? mScreenHeight / mFieldSize
+                : mScreenWidth / mFieldSize;
 
         Log.d(TAG,  String.format("Screen width: %d\nScreen height: %d\nCells: %d\nCell size: %d",
-                mScreenWidth, mScreenHeight, FIELD_SIZE, mCellSize));
+                mScreenWidth, mScreenHeight, mFieldSize, mCellSize));
     }
 
     public void setGameEngine(GameEngine gameEngine) {
@@ -111,8 +117,8 @@ public class FieldView extends View {
 
         Rect rect = new Rect();
 
-        for (int i = 0; i < FIELD_SIZE; i++) {
-            for (int j = 0; j < FIELD_SIZE; j++) {
+        for (int i = 0; i < mFieldSize; i++) {
+            for (int j = 0; j < mFieldSize; j++) {
                 rect.set(lOffset, tOffset, lOffset + mCellSize, tOffset + mCellSize);
                 canvas.drawRect(rect, mGridPaint);
                 lOffset += mCellSize;

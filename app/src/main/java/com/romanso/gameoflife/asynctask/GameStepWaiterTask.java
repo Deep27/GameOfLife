@@ -13,7 +13,7 @@ public class GameStepWaiterTask extends AsyncTask<GameEngine, Void, Void >{
     protected Void doInBackground(GameEngine... gameEngines) {
         while (true) {
             try {
-                TimeUnit.MILLISECONDS.sleep(100);
+                TimeUnit.MILLISECONDS.sleep(50);
                 gameEngines[0].nextStep();
             } catch (InterruptedException e) {
                 e.printStackTrace();

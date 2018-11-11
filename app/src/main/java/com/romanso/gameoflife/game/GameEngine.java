@@ -13,8 +13,8 @@ public class GameEngine {
     private int mLiveCells = 0;
     private GameState mState = GameState.INITIALIZING;
 
-    public GameEngine(int x, int y) {
-        this (x, y, 0.15);
+    public GameEngine(int size) {
+        this (size, size, 0.15);
     }
 
     public GameEngine(int x , int y, double fillPercentage) {
@@ -26,6 +26,7 @@ public class GameEngine {
         mField = new Toroid<>(x, y);
         mCells = mField.size();
 
+        // @TODO proper way of initialization
 //        for (int i = 0; i < y; i++) {
 //            for (int j = 0; j < x; j++) {
 //                if (Math.random() <= fillPercentage) {
@@ -37,17 +38,59 @@ public class GameEngine {
 //            }
 //        }
 
-        // glider
         for (int i = 0; i < y; i++) {
             for (int j = 0; j < x; j++) {
                 mField.set(i, j, new BooleanCell(false));
             }
         }
-        mField.set(8, 4, new BooleanCell(true));
-        mField.set(9, 5, new BooleanCell(true));
-        mField.set(10, 3, new BooleanCell(true));
-        mField.set(10, 4, new BooleanCell(true));
-        mField.set(10, 5, new BooleanCell(true));
+
+//        // glider
+//        mField.set(8, 4, new BooleanCell(true));
+//        mField.set(9, 5, new BooleanCell(true));
+//        mField.set(10, 3, new BooleanCell(true));
+//        mField.set(10, 4, new BooleanCell(true));
+//        mField.set(10, 5, new BooleanCell(true));
+
+        // Gosper glider gun
+        mField.set(25, 2, new BooleanCell(true));
+        mField.set(25, 3, new BooleanCell(true));
+        mField.set(26, 2, new BooleanCell(true));
+        mField.set(26, 3, new BooleanCell(true));
+
+        mField.set(23, 14, new BooleanCell(true));
+        mField.set(23, 15, new BooleanCell(true));
+        mField.set(24, 13, new BooleanCell(true));
+        mField.set(24, 17, new BooleanCell(true));
+        mField.set(25, 12, new BooleanCell(true));
+        mField.set(25, 18, new BooleanCell(true));
+        mField.set(26, 12, new BooleanCell(true));
+        mField.set(26, 16, new BooleanCell(true));
+        mField.set(26, 18, new BooleanCell(true));
+        mField.set(26, 19, new BooleanCell(true));
+        mField.set(27,12, new BooleanCell(true));
+        mField.set(27, 18, new BooleanCell(true));
+        mField.set(28, 13, new BooleanCell(true));
+        mField.set(28, 17, new BooleanCell(true));
+        mField.set(29, 14, new BooleanCell(true));
+        mField.set(29, 15, new BooleanCell(true));
+
+        mField.set(21, 26, new BooleanCell(true));
+        mField.set(22, 24, new BooleanCell(true));
+        mField.set(22, 26, new BooleanCell(true));
+        mField.set(23, 22, new BooleanCell(true));
+        mField.set(23, 23, new BooleanCell(true));
+        mField.set(24, 22, new BooleanCell(true));
+        mField.set(24, 23, new BooleanCell(true));
+        mField.set(25, 22, new BooleanCell(true));
+        mField.set(25, 23, new BooleanCell(true));
+        mField.set(26, 24, new BooleanCell(true));
+        mField.set(26, 26, new BooleanCell(true));
+        mField.set(27, 26, new BooleanCell(true));
+
+        mField.set(23, 36, new BooleanCell(true));
+        mField.set(23, 37, new BooleanCell(true));
+        mField.set(24, 36, new BooleanCell(true));
+        mField.set(24, 37, new BooleanCell(true));
     }
 
     @SuppressLint("DefaultLocale")
