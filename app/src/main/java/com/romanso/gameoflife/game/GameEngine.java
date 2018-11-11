@@ -43,11 +43,11 @@ public class GameEngine {
                 mField.set(i, j, new BooleanCell(false));
             }
         }
-        mField.set(6, 4, new BooleanCell(true));
-        mField.set(7, 5, new BooleanCell(true));
-        mField.set(8, 3, new BooleanCell(true));
         mField.set(8, 4, new BooleanCell(true));
-        mField.set(8, 5, new BooleanCell(true));
+        mField.set(9, 5, new BooleanCell(true));
+        mField.set(10, 3, new BooleanCell(true));
+        mField.set(10, 4, new BooleanCell(true));
+        mField.set(10, 5, new BooleanCell(true));
     }
 
     @SuppressLint("DefaultLocale")
