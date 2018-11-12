@@ -6,15 +6,26 @@ import com.romanso.gameoflife.game.GameEngine;
 
 import java.util.concurrent.TimeUnit;
 
-public class GameStepWaiterTask extends AsyncTask<GameEngine, Void, Void >{
+public class GameStepWaiterTask extends AsyncTask<Void, Void, Void >{
 
+    private GameEngine mGameEngine;
+
+    public GameStepWaiterTask(GameEngine gameEngine) {
+
+        mGameEngine = gameEngine;
+    }
 
     @Override
-    protected Void doInBackground(GameEngine... gameEngines) {
+    protected void onPreExecute() {
+        super.onPreExecute();
+    }
+
+    @Override
+    protected Void doInBackground(Void... gameEngines) {
         while (true) {
             try {
                 TimeUnit.MILLISECONDS.sleep(50);
-                gameEngines[0].nextStep();
+                mGameEngine.nextStep();
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }

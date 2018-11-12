@@ -5,6 +5,7 @@ import android.annotation.SuppressLint;
 import com.romanso.gameoflife.ds.Toroid;
 import com.romanso.gameoflife.game.cell.BooleanCell;
 import com.romanso.gameoflife.game.cell.Cell;
+import com.romanso.gameoflife.game.figure.Figure;
 
 public class GameEngine {
 
@@ -111,12 +112,12 @@ public class GameEngine {
         return sb.toString();
     }
 
-    public GameState getGameState() {
-        return mState;
+    public void putFigure(Figure figure, int y, int x) {
+
     }
 
-    public void setGameState(GameState gs) {
-        mState = gs;
+    public GameState getGameState() {
+        return mState;
     }
 
     public int getYSize() {
@@ -137,6 +138,10 @@ public class GameEngine {
 
     public int getDeadCells() {
         return mCells - mLiveCells;
+    }
+
+    public void start() {
+        mState = GameState.STARTED;
     }
 
     public void nextStep() {

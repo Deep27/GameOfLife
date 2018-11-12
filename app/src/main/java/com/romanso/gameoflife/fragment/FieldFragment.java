@@ -31,12 +31,11 @@ public class FieldFragment extends Fragment {
 
         mFieldView = getView().findViewById(R.id.field_fieldview);
         mGameEngine = new GameEngine(60);
-        mGameEngine.setGameState(GameState.STARTED);
 
         mFieldView.setGameEngine(mGameEngine);
         mFieldView.setFieldFragment(this);
 
-        GameStepWaiterTask gameStepWaiterTask = new GameStepWaiterTask();
-        gameStepWaiterTask.execute(mGameEngine);
+        GameStepWaiterTask gameStepWaiterTask = new GameStepWaiterTask(mGameEngine);
+        gameStepWaiterTask.execute();
     }
 }
