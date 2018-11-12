@@ -1,6 +1,6 @@
 package com.romanso.gameoflife;
 
-import com.romanso.gameoflife.game.GameEngine;
+import com.romanso.gameoflife.model.game.GameEngine;
 
 import org.junit.Test;
 

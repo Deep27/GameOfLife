@@ -1,6 +1,6 @@
 package com.romanso.gameoflife;
 
-import com.romanso.gameoflife.ds.Toroid;
+import com.romanso.gameoflife.model.ds.Toroid;
 
 import org.junit.Before;
 import org.junit.Test;

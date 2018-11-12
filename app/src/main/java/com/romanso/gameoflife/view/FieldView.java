@@ -15,9 +15,9 @@ import android.view.MotionEvent;
 import android.view.View;
 
 import com.romanso.gameoflife.R;
-import com.romanso.gameoflife.fragment.FieldFragment;
-import com.romanso.gameoflife.game.GameEngine;
-import com.romanso.gameoflife.game.GameState;
+import com.romanso.gameoflife.controller.fragment.FieldFragment;
+import com.romanso.gameoflife.model.game.GameEngine;
+import com.romanso.gameoflife.model.game.GameState;
 
 public class FieldView extends View {
 
