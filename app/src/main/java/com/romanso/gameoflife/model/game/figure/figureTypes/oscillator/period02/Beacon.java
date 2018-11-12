@@ -4,7 +4,7 @@ import com.romanso.gameoflife.model.game.figure.figureTypes.oscillator.Oscillato
 
 public final class Beacon<D> extends Oscillator<D> {
 
-    public Beacon(Class<D> cellClass) {
-        super(cellClass, 4, 4);
+    public Beacon() {
+        super(4, 4);
     }
 }

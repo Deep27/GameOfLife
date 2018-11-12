@@ -7,7 +7,7 @@ public final class Glider<D> extends Spaceship<D> {
      *  o x o
      *  x o o
      */
-    public Glider(Class<D> cellClass) {
-        super(cellClass, 3, 3);
+    public Glider() {
+        super(3, 3);
     }
 }

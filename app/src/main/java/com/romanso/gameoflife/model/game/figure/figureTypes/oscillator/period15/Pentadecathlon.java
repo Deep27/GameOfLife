@@ -4,7 +4,7 @@ import com.romanso.gameoflife.model.game.figure.figureTypes.oscillator.Oscillato
 
 public final class Pentadecathlon<D> extends Oscillator<D> {
 
-    public Pentadecathlon(Class<D> cellClass) {
-        super(cellClass, 16, 9);
+    public Pentadecathlon() {
+        super(16, 9);
     }
 }

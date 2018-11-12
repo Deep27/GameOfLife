@@ -4,7 +4,7 @@ import com.romanso.gameoflife.model.game.figure.figureTypes.oscillator.Oscillato
 
 public final class Toad<D> extends Oscillator<D> {
 
-    public Toad(Class<D> cellClass) {
-        super(cellClass, 4, 4);
+    public Toad() {
+        super(4, 4);
     }
 }

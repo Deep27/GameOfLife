@@ -4,7 +4,7 @@ import com.romanso.gameoflife.model.game.figure.figureTypes.oscillator.Oscillato
 
 public final class Pulsar<D> extends Oscillator<D> {
 
-    public Pulsar(Class<D> cellClass) {
-        super(cellClass, 15, 15);
+    public Pulsar() {
+        super(15, 15);
     }
 }

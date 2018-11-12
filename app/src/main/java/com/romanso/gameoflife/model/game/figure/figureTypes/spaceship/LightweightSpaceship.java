@@ -8,7 +8,7 @@ public final class LightweightSpaceship<D> extends Spaceship<D> {
      *  o x x x o
      *  x o o o o
      */
-    public LightweightSpaceship(Class<D> cellClass) {
-        super(cellClass, 4, 5);
+    public LightweightSpaceship() {
+        super(4, 5);
     }
 }

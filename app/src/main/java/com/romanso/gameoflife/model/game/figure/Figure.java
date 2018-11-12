@@ -1,10 +1,12 @@
 package com.romanso.gameoflife.model.game.figure;
 
+// @TODO get rid of unchecked warnings
 public abstract class Figure<D> {
 
-    protected D[][] figure;
+    protected D[][] mFigure;
 
-    public Figure(Class<D> cellClass, int y, int x) {
-
+    @SuppressWarnings("unchecked")
+    public Figure(int y, int x) {
+        mFigure = (D[][]) new Object[y][x];
     }
 }

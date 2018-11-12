@@ -4,7 +4,7 @@ import com.romanso.gameoflife.model.game.figure.figureTypes.oscillator.Oscillato
 
 public final class Blinker<D> extends Oscillator<D> {
 
-    public Blinker(Class<D> cellClass) {
-        super(cellClass, 3, 3);
+    public Blinker() {
+        super(3, 3);
     }
 }
