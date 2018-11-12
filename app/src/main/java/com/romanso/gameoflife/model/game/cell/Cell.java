@@ -1,6 +1,6 @@
 package com.romanso.gameoflife.model.game.cell;
 
-public abstract class Cell {
+public abstract class Cell implements Cloneable {
 
     protected boolean mAlive;
 
@@ -10,7 +10,16 @@ public abstract class Cell {
 
     @Override
     public String toString() {
-        return mAlive ? "O" : "x";
+        return mAlive ? "x" : "-";
+    }
+
+    public Object clone() {
+        try {
+            return super.clone();
+        } catch (CloneNotSupportedException e) {
+            e.printStackTrace();
+        }
+        throw new IllegalStateException("Could not clone cell!");
     }
 
     public void kill() {

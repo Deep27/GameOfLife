@@ -6,6 +6,8 @@ import com.romanso.gameoflife.model.ds.Toroid;
 import com.romanso.gameoflife.model.game.cell.BooleanCell;
 import com.romanso.gameoflife.model.game.cell.Cell;
 import com.romanso.gameoflife.model.game.figure.Figure;
+import com.romanso.gameoflife.model.game.figure.figureTypes.generator.GliderGun;
+import com.romanso.gameoflife.model.game.figure.figureTypes.spaceship.Glider;
 
 public class GameEngine {
 
@@ -18,16 +20,15 @@ public class GameEngine {
         this (size, size, 0.15);
     }
 
-    public GameEngine(int x , int y, double fillPercentage) {
+    public GameEngine(int y , int x, double fillPercentage) {
 
         if (fillPercentage < 0 || fillPercentage > 1) {
             throw new IllegalArgumentException("Fill percentage must be in [0:1]!");
         }
 
-        mField = new Toroid<>(x, y);
+        mField = new Toroid<>(y, x);
         mCells = mField.size();
 
-        // @TODO proper way of initialization
 //        for (int i = 0; i < y; i++) {
 //            for (int j = 0; j < x; j++) {
 //                if (Math.random() <= fillPercentage) {
@@ -45,53 +46,21 @@ public class GameEngine {
             }
         }
 
-//        // glider
-//        mField.set(8, 4, new BooleanCell(true));
-//        mField.set(9, 5, new BooleanCell(true));
-//        mField.set(10, 3, new BooleanCell(true));
-//        mField.set(10, 4, new BooleanCell(true));
-//        mField.set(10, 5, new BooleanCell(true));
+        Glider<BooleanCell> glider = new Glider<>(
+                new BooleanCell(true),
+                new BooleanCell(false)
+        );
 
-        // Gosper glider gun
-        mField.set(25, 2, new BooleanCell(true));
-        mField.set(25, 3, new BooleanCell(true));
-        mField.set(26, 2, new BooleanCell(true));
-        mField.set(26, 3, new BooleanCell(true));
+//        putFigure(glider, 0, 0);
+//        putFigure(glider, 0, 5);
+//        putFigure(glider, 0, 10);
 
-        mField.set(23, 14, new BooleanCell(true));
-        mField.set(23, 15, new BooleanCell(true));
-        mField.set(24, 13, new BooleanCell(true));
-        mField.set(24, 17, new BooleanCell(true));
-        mField.set(25, 12, new BooleanCell(true));
-        mField.set(25, 18, new BooleanCell(true));
-        mField.set(26, 12, new BooleanCell(true));
-        mField.set(26, 16, new BooleanCell(true));
-        mField.set(26, 18, new BooleanCell(true));
-        mField.set(26, 19, new BooleanCell(true));
-        mField.set(27,12, new BooleanCell(true));
-        mField.set(27, 18, new BooleanCell(true));
-        mField.set(28, 13, new BooleanCell(true));
-        mField.set(28, 17, new BooleanCell(true));
-        mField.set(29, 14, new BooleanCell(true));
-        mField.set(29, 15, new BooleanCell(true));
+        GliderGun<BooleanCell> gliderGun = new GliderGun<>(
+                new BooleanCell(true),
+                new BooleanCell(false)
+        );
 
-        mField.set(21, 26, new BooleanCell(true));
-        mField.set(22, 24, new BooleanCell(true));
-        mField.set(22, 26, new BooleanCell(true));
-        mField.set(23, 22, new BooleanCell(true));
-        mField.set(23, 23, new BooleanCell(true));
-        mField.set(24, 22, new BooleanCell(true));
-        mField.set(24, 23, new BooleanCell(true));
-        mField.set(25, 22, new BooleanCell(true));
-        mField.set(25, 23, new BooleanCell(true));
-        mField.set(26, 24, new BooleanCell(true));
-        mField.set(26, 26, new BooleanCell(true));
-        mField.set(27, 26, new BooleanCell(true));
-
-        mField.set(23, 36, new BooleanCell(true));
-        mField.set(23, 37, new BooleanCell(true));
-        mField.set(24, 36, new BooleanCell(true));
-        mField.set(24, 37, new BooleanCell(true));
+        putFigure(gliderGun, 25, 10);
     }
 
     @SuppressLint("DefaultLocale")
@@ -112,8 +81,8 @@ public class GameEngine {
         return sb.toString();
     }
 
-    public void putFigure(Figure figure, int y, int x) {
-
+    public void putFigure(Figure f, int y, int x) {
+        Figure.putToToroid(mField, f, y, x);
     }
 
     public GameState getGameState() {
@@ -150,7 +119,7 @@ public class GameEngine {
 
     private void defineCellsState() {
 
-        Toroid<Cell> newField = new Toroid<>(mField.xSize(), mField.ySize());
+        Toroid<Cell> newField = new Toroid<>(mField.ySize(), mField.xSize());
 
         int aliveNeighbours;
         mLiveCells = 0;

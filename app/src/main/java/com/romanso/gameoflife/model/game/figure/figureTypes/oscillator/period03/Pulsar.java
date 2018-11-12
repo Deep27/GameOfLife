@@ -1,10 +1,11 @@
 package com.romanso.gameoflife.model.game.figure.figureTypes.oscillator.period03;
 
+import com.romanso.gameoflife.model.game.cell.Cell;
 import com.romanso.gameoflife.model.game.figure.figureTypes.oscillator.Oscillator;
 
-public final class Pulsar<D> extends Oscillator<D> {
+public final class Pulsar<D extends Cell> extends Oscillator {
 
-    public Pulsar() {
-        super(15, 15);
+    public Pulsar(D deadCell, D liveCell) {
+        super(deadCell, liveCell, 15, 15);
     }
 }

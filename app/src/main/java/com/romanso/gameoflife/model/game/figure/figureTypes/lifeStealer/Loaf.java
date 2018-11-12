@@ -1,8 +1,10 @@
 package com.romanso.gameoflife.model.game.figure.figureTypes.lifeStealer;
 
-public final class Loaf<D> extends LifeStealer<D> {
+import com.romanso.gameoflife.model.game.cell.Cell;
 
-    public Loaf() {
-        super(4, 4);
+public final class Loaf<D extends Cell> extends LifeStealer {
+
+    public Loaf(D deadCell, D liveCell, int y, int x) {
+        super(deadCell, liveCell, 4, 4);
     }
 }

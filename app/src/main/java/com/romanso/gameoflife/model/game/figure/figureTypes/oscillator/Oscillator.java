@@ -1,10 +1,11 @@
 package com.romanso.gameoflife.model.game.figure.figureTypes.oscillator;
 
+import com.romanso.gameoflife.model.game.cell.Cell;
 import com.romanso.gameoflife.model.game.figure.Figure;
 
-public abstract class Oscillator<D> extends Figure<D> {
+public abstract class Oscillator<D extends Cell> extends Figure {
 
-    public Oscillator(int y, int x) {
-        super(y, x);
+    public Oscillator(D deadCell, D liveCell, int y, int x) {
+        super(deadCell, liveCell, y, x);
     }
 }

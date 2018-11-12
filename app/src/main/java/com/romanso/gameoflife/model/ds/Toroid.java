@@ -9,7 +9,7 @@ public class Toroid<D> {
 
     private final Object[][] mData;
 
-    public Toroid(int x, int y) {
+    public Toroid(int y, int x) {
 
         if (x < 2 || y < 2) {
             throw new IllegalArgumentException("Size of toroid must be 2x2 or more!");
@@ -32,7 +32,9 @@ public class Toroid<D> {
     }
 
     public void set(int y, int x, D data) {
-        mData[y % mData.length][x % mData[0].length] = data;
+        y = handleY(y);
+        x = handleX(x);
+        mData[y][x] = data;
     }
 
     /**
@@ -53,6 +55,8 @@ public class Toroid<D> {
         if (data.size() != mData[0].length) {
             throw new IllegalArgumentException("New data size is not the same as the old one's!");
         }
+
+        y = handleY(y);
 
         for (int i = 0; i < mData[0].length; i++) {
             mData[y][i] = data.get(i);
@@ -82,6 +86,8 @@ public class Toroid<D> {
             throw new IllegalArgumentException("New data size is not the same as the old one's!");
         }
 
+        x = handleX(x);
+
         for (int i = 0; i < mData.length; i++) {
             mData[i][x] = data.get(i);
         }
@@ -94,13 +100,9 @@ public class Toroid<D> {
 
     @SuppressWarnings("unchecked")
     public D get(int y, int x) {
-        if (y < 0) {
-            y = mData.length + y;
-        }
-        if (x < 0) {
-            x = mData[0].length + x;
-        }
-        Object data = mData[y % mData.length][x % mData[0].length];
+        y = handleY(y);
+        x = handleX(x);
+        Object data = mData[y][x];
         return (D) data;
     }
 
@@ -112,9 +114,11 @@ public class Toroid<D> {
     @SuppressWarnings("unchecked")
     public ArrayList<D> getXData(int x) {
 
+        x = handleX(x);
+
         ArrayList<D> xData = new ArrayList<>(mData[0].length);
         for (Object[] aMData : mData) {
-            xData.add((D) aMData[x % mData[0].length]);
+            xData.add((D) aMData[x]);
         }
         return xData;
     }
@@ -129,5 +133,25 @@ public class Toroid<D> {
 
     public int xSize() {
         return mData[0].length;
+    }
+
+    public int handleY(int y) {
+        y %= mData.length;
+
+        if (y < 0) {
+            y = mData.length + y;
+        }
+
+        return y;
+    }
+
+    public int handleX(int x) {
+        x %= mData.length;
+
+        if (x < 0) {
+            x = mData.length + x;
+        }
+
+        return x;
     }
 }

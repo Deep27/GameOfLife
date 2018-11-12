@@ -1,4 +1,4 @@
-package com.romanso.gameoflife;
+package com.romanso.gameoflife.toroid;
 
 import com.romanso.gameoflife.model.ds.Toroid;
 

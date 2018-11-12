@@ -1,6 +1,8 @@
 package com.romanso.gameoflife.model.game.figure.figureTypes.spaceship;
 
-public final class LightweightSpaceship<D> extends Spaceship<D> {
+import com.romanso.gameoflife.model.game.cell.Cell;
+
+public final class LightweightSpaceship<D extends Cell> extends Spaceship {
 
     /**
      *  o x x o x
@@ -8,7 +10,7 @@ public final class LightweightSpaceship<D> extends Spaceship<D> {
      *  o x x x o
      *  x o o o o
      */
-    public LightweightSpaceship() {
-        super(4, 5);
+    public LightweightSpaceship(Cell liveCell, Cell deadCell) {
+        super(liveCell, deadCell, 4, 5);
     }
 }

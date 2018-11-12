@@ -1,8 +1,10 @@
 package com.romanso.gameoflife.model.game.figure.figureTypes.lifeStealer;
 
-public final class Boat<D> extends LifeStealer<D> {
+import com.romanso.gameoflife.model.game.cell.Cell;
 
-    public Boat() {
-        super(3, 3);
+public final class Boat<D extends Cell> extends LifeStealer {
+
+    public Boat(D deadCell, D liveCell) {
+        super(deadCell, liveCell, 3, 3);
     }
 }
