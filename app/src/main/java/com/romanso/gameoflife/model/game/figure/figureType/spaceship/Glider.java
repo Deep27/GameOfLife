@@ -1,4 +1,4 @@
-package com.romanso.gameoflife.model.game.figure.figureTypes.spaceship;
+package com.romanso.gameoflife.model.game.figure.figureType.spaceship;
 
 import com.romanso.gameoflife.model.game.cell.Cell;
 

@@ -1,4 +1,4 @@
-package com.romanso.gameoflife.model.game.figure.figureTypes.oscillator;
+package com.romanso.gameoflife.model.game.figure.figureType.oscillator;
 
 import com.romanso.gameoflife.model.game.cell.Cell;
 import com.romanso.gameoflife.model.game.figure.Figure;

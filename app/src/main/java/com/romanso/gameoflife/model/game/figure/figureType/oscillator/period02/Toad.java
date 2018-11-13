@@ -1,7 +1,7 @@
-package com.romanso.gameoflife.model.game.figure.figureTypes.oscillator.period02;
+package com.romanso.gameoflife.model.game.figure.figureType.oscillator.period02;
 
 import com.romanso.gameoflife.model.game.cell.Cell;
-import com.romanso.gameoflife.model.game.figure.figureTypes.oscillator.Oscillator;
+import com.romanso.gameoflife.model.game.figure.figureType.oscillator.Oscillator;
 
 public final class Toad<D extends Cell> extends Oscillator {
 
