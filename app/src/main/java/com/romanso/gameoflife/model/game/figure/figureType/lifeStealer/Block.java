@@ -1,4 +1,4 @@
-package com.romanso.gameoflife.model.game.figure.figureTypes.lifeStealer;
+package com.romanso.gameoflife.model.game.figure.figureType.lifeStealer;
 
 import com.romanso.gameoflife.model.game.cell.Cell;
 

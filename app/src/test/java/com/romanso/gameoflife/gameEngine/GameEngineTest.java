@@ -2,7 +2,7 @@ package com.romanso.gameoflife.gameEngine;
 
 import com.romanso.gameoflife.model.game.GameEngine;
 import com.romanso.gameoflife.model.game.cell.BooleanCell;
-import com.romanso.gameoflife.model.game.figure.figureTypes.lifeStealer.Block;
+import com.romanso.gameoflife.model.game.figure.figureType.lifeStealer.Block;
 
 import org.junit.Before;
 import org.junit.Test;

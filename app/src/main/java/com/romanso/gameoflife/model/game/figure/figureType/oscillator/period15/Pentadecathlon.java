@@ -1,7 +1,7 @@
-package com.romanso.gameoflife.model.game.figure.figureTypes.oscillator.period15;
+package com.romanso.gameoflife.model.game.figure.figureType.oscillator.period15;
 
 import com.romanso.gameoflife.model.game.cell.Cell;
-import com.romanso.gameoflife.model.game.figure.figureTypes.oscillator.Oscillator;
+import com.romanso.gameoflife.model.game.figure.figureType.oscillator.Oscillator;
 
 public final class Pentadecathlon<D extends Cell> extends Oscillator {
 

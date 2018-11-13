@@ -6,8 +6,8 @@ import com.romanso.gameoflife.model.ds.Toroid;
 import com.romanso.gameoflife.model.game.cell.BooleanCell;
 import com.romanso.gameoflife.model.game.cell.Cell;
 import com.romanso.gameoflife.model.game.figure.Figure;
-import com.romanso.gameoflife.model.game.figure.figureTypes.generator.GliderGun;
-import com.romanso.gameoflife.model.game.figure.figureTypes.spaceship.Glider;
+import com.romanso.gameoflife.model.game.figure.figureType.generator.GliderGun;
+import com.romanso.gameoflife.model.game.figure.figureType.spaceship.Glider;
 
 public class GameEngine {
 

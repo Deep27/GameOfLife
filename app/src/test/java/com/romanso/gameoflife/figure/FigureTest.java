@@ -1,7 +1,7 @@
 package com.romanso.gameoflife.figure;
 
 import com.romanso.gameoflife.model.game.cell.BooleanCell;
-import com.romanso.gameoflife.model.game.figure.figureTypes.spaceship.Glider;
+import com.romanso.gameoflife.model.game.figure.figureType.spaceship.Glider;
 
 import org.junit.Test;
 
