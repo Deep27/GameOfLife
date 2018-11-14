@@ -152,7 +152,7 @@ public class GameEngine {
         mField = newField;
         mCells = mField.size();
 
-        System.out.println("New field\n" + this);
+//        System.out.println("New field\n" + this);
     }
 
     private int countAliveNeighbours(int y, int x) {
