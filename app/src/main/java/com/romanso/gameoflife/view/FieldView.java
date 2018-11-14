@@ -1,6 +1,5 @@
 package com.romanso.gameoflife.view;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
@@ -15,9 +14,7 @@ import android.view.MotionEvent;
 import android.view.View;
 
 import com.romanso.gameoflife.R;
-import com.romanso.gameoflife.controller.fragment.FieldFragment;
 import com.romanso.gameoflife.model.game.GameEngine;
-import com.romanso.gameoflife.model.game.GameState;
 
 public class FieldView extends View {
 
@@ -33,7 +30,6 @@ public class FieldView extends View {
     private int mWidth, mHeight;
     private Paint mGridPaint;
     private Paint mCellPaint;
-    private FieldFragment mFieldFragment;
     private GameEngine mGameEngine;
 
     public FieldView(Context context) {
@@ -55,16 +51,12 @@ public class FieldView extends View {
         mCellPaint = new Paint();
         mCellPaint.setColor(Color.rgb(127, 127, 127));
         mCellPaint.setStrokeWidth(LINE_THICKNESS);
+
+        countMetrics();
     }
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-
-        if (mGameEngine.getGameState().equals(GameState.INITIALIZING)) {
-            if (event.getAction() == MotionEvent.ACTION_DOWN) {
-//                invalidate();
-            }
-        }
 
         return super.onTouchEvent(event);
     }
@@ -84,16 +76,10 @@ public class FieldView extends View {
         invalidate();
     }
 
-    public void setFieldFragment(FieldFragment fieldFragment) {
-        mFieldFragment = fieldFragment;
+    private void countMetrics() {
 
-        DisplayMetrics dm = new DisplayMetrics();
-        Activity parentActivity = mFieldFragment.getActivity();
-        if (parentActivity != null) {
-            mFieldFragment.getActivity().getWindowManager().getDefaultDisplay().getMetrics(dm);
-        } else {
-            throw new IllegalStateException("Parent activity of " + this.getClass().getName() + " is null!");
-        }
+        DisplayMetrics dm = getContext().getResources().getDisplayMetrics();
+
         mScreenHeight = dm.heightPixels;
         mScreenWidth = dm.widthPixels;
 

@@ -32,7 +32,6 @@ public class FieldFragment extends Fragment {
         mGameEngine = new GameEngine(60);
 
         mFieldView.setGameEngine(mGameEngine);
-        mFieldView.setFieldFragment(this);
 
         GameStepWaiterTask gameStepWaiterTask = new GameStepWaiterTask(mGameEngine);
         gameStepWaiterTask.execute();
