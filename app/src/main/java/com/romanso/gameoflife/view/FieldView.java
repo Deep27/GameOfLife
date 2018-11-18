@@ -14,6 +14,7 @@ import android.view.MotionEvent;
 import android.view.View;
 
 import com.romanso.gameoflife.R;
+import com.romanso.gameoflife.model.asynctask.GameStepWaiterTask;
 import com.romanso.gameoflife.model.game.GameEngine;
 
 public class FieldView extends View {
@@ -30,7 +31,9 @@ public class FieldView extends View {
     private int mWidth, mHeight;
     private Paint mGridPaint;
     private Paint mCellPaint;
+
     private GameEngine mGameEngine;
+    private GameStepWaiterTask mGameStepWaiterTask;
 
     public FieldView(Context context) {
         super(context);
@@ -93,6 +96,11 @@ public class FieldView extends View {
 
     public void setGameEngine(GameEngine gameEngine) {
         mGameEngine = gameEngine;
+        mGameStepWaiterTask = new GameStepWaiterTask(mGameEngine);
+    }
+
+    public void startGame() {
+        mGameStepWaiterTask.execute();
     }
 
     private void drawField(Canvas canvas) {
