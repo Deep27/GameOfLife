@@ -10,7 +10,11 @@ public class GameEnginePresenter extends MvpPresenter<GameView> {
 
     private GameEngine mGameEngine;
 
-    public GameEnginePresenter() {
-        mGameEngine = new GameEngine(60);
+    public GameEnginePresenter(int fieldSize) {
+        mGameEngine = new GameEngine(fieldSize);
+    }
+
+    public GameEngine getGameEngine() {
+        return mGameEngine;
     }
 }

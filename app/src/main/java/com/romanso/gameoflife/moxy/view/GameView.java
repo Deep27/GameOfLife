@@ -8,4 +8,7 @@ public interface GameView extends MvpView {
 
     @StateStrategyType(AddToEndSingleStrategy.class)
     void startGame();
+
+    void pauseGame();
+    void resumeGame();
 }

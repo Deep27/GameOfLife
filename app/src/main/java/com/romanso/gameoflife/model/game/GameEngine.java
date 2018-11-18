@@ -2,6 +2,7 @@ package com.romanso.gameoflife.model.game;
 
 import android.annotation.SuppressLint;
 
+import com.romanso.gameoflife.model.asynctask.GameStepWaiterTask;
 import com.romanso.gameoflife.model.ds.Toroid;
 import com.romanso.gameoflife.model.game.cell.BooleanCell;
 import com.romanso.gameoflife.model.game.cell.Cell;
@@ -16,8 +17,11 @@ public class GameEngine {
     private int mLiveCells = 0;
     private GameState mState = GameState.INITIALIZING;
 
+    private GameStepWaiterTask mGameStepWaiterTask;
+
     public GameEngine(int size) {
         this (size, size, 0.15);
+        mGameStepWaiterTask = new GameStepWaiterTask(this);
     }
 
     public GameEngine(int y , int x, double fillPercentage) {
@@ -110,7 +114,16 @@ public class GameEngine {
     }
 
     public void start() {
-        mState = GameState.STARTED;
+        mState = GameState.RUNNING;
+        mGameStepWaiterTask.execute();
+    }
+
+    public void pause() {
+        mState = GameState.PAUSED;
+    }
+
+    public void resume() {
+        mState = GameState.RUNNING;
     }
 
     public void nextStep() {

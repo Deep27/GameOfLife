@@ -13,13 +13,18 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 
+import com.arellomobile.mvp.presenter.InjectPresenter;
+import com.arellomobile.mvp.presenter.ProvidePresenter;
 import com.romanso.gameoflife.R;
-import com.romanso.gameoflife.model.asynctask.GameStepWaiterTask;
-import com.romanso.gameoflife.model.game.GameEngine;
+import com.romanso.gameoflife.moxy.presenter.GameEnginePresenter;
+import com.romanso.gameoflife.moxy.view.GameView;
 
-public class FieldView extends View {
+public class FieldView extends View implements GameView {
 
     private static final String TAG = FieldView.class.getName();
+
+    @InjectPresenter
+    GameEnginePresenter mGameEnginePresenter;
 
     private static final int LINE_THICKNESS = 1;
 
@@ -31,9 +36,6 @@ public class FieldView extends View {
     private int mWidth, mHeight;
     private Paint mGridPaint;
     private Paint mCellPaint;
-
-    private GameEngine mGameEngine;
-    private GameStepWaiterTask mGameStepWaiterTask;
 
     public FieldView(Context context) {
         super(context);
@@ -56,6 +58,11 @@ public class FieldView extends View {
         mCellPaint.setStrokeWidth(LINE_THICKNESS);
 
         countMetrics();
+    }
+
+    @ProvidePresenter
+    GameEnginePresenter provideGameEnginePresenter() {
+        return new GameEnginePresenter(60);
     }
 
     @Override
@@ -94,13 +101,19 @@ public class FieldView extends View {
                 mScreenWidth, mScreenHeight, mFieldSize, mCellSize));
     }
 
-    public void setGameEngine(GameEngine gameEngine) {
-        mGameEngine = gameEngine;
-        mGameStepWaiterTask = new GameStepWaiterTask(mGameEngine);
+    @Override
+    public void startGame() {
+        mGameEnginePresenter.getGameEngine().start();
     }
 
-    public void startGame() {
-        mGameStepWaiterTask.execute();
+    @Override
+    public void pauseGame() {
+        mGameEnginePresenter.getGameEngine().pause();
+    }
+
+    @Override
+    public void resumeGame() {
+        mGameEnginePresenter.getGameEngine().resume();
     }
 
     private void drawField(Canvas canvas) {
@@ -123,9 +136,9 @@ public class FieldView extends View {
     }
 
     private void drawCells(Canvas canvas) {
-        for (int i = 0; i < mGameEngine.getYSize(); i++) {
-            for (int j = 0; j < mGameEngine.getXSize(); j++) {
-                if (mGameEngine.isCellAlive(i, j)) {
+        for (int i = 0; i < mGameEnginePresenter.getGameEngine().getYSize(); i++) {
+            for (int j = 0; j < mGameEnginePresenter.getGameEngine().getXSize(); j++) {
+                if (mGameEnginePresenter.getGameEngine().isCellAlive(i, j)) {
                     drawCell(canvas, i, j);
                 }
             }
