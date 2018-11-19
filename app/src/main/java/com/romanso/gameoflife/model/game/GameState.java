@@ -2,5 +2,5 @@ package com.romanso.gameoflife.model.game;
 
 public enum GameState {
 
-    INITIALIZING, STARTED, FINISHED
+    INITIALIZING, RUNNING, PAUSED, FINISHED
 }

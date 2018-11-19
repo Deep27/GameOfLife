@@ -20,6 +20,8 @@ public class FieldView extends View {
 
     private static final String TAG = FieldView.class.getName();
 
+    private GameEngine mGameEngine;
+
     private static final int LINE_THICKNESS = 1;
 
     private int mScreenWidth;
@@ -30,7 +32,6 @@ public class FieldView extends View {
     private int mWidth, mHeight;
     private Paint mGridPaint;
     private Paint mCellPaint;
-    private GameEngine mGameEngine;
 
     public FieldView(Context context) {
         super(context);
@@ -76,6 +77,10 @@ public class FieldView extends View {
         invalidate();
     }
 
+    public void setGameEngine(GameEngine gameEngine) {
+        mGameEngine = gameEngine;
+    }
+
     private void countMetrics() {
 
         DisplayMetrics dm = getContext().getResources().getDisplayMetrics();
@@ -91,9 +96,6 @@ public class FieldView extends View {
                 mScreenWidth, mScreenHeight, mFieldSize, mCellSize));
     }
 
-    public void setGameEngine(GameEngine gameEngine) {
-        mGameEngine = gameEngine;
-    }
 
     private void drawField(Canvas canvas) {
 
@@ -115,6 +117,7 @@ public class FieldView extends View {
     }
 
     private void drawCells(Canvas canvas) {
+
         for (int i = 0; i < mGameEngine.getYSize(); i++) {
             for (int j = 0; j < mGameEngine.getXSize(); j++) {
                 if (mGameEngine.isCellAlive(i, j)) {

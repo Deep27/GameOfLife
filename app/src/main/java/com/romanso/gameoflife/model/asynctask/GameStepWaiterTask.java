@@ -1,6 +1,7 @@
 package com.romanso.gameoflife.model.asynctask;
 
 import android.os.AsyncTask;
+import android.util.Log;
 
 import com.romanso.gameoflife.model.game.GameEngine;
 
@@ -8,10 +9,11 @@ import java.util.concurrent.TimeUnit;
 
 public class GameStepWaiterTask extends AsyncTask<Void, Void, Void >{
 
+    private static final String TAG = GameStepWaiterTask.class.getSimpleName();
+
     private GameEngine mGameEngine;
 
     public GameStepWaiterTask(GameEngine gameEngine) {
-
         mGameEngine = gameEngine;
     }
 
@@ -21,13 +23,24 @@ public class GameStepWaiterTask extends AsyncTask<Void, Void, Void >{
     }
 
     @Override
-    protected Void doInBackground(Void... gameEngines) {
+    protected Void doInBackground(Void... voids) {
+        Log.d(TAG, "doInBackground");
         while (true) {
-            try {
-                TimeUnit.MILLISECONDS.sleep(50);
-                mGameEngine.nextStep();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
+            switch (mGameEngine.getGameState()) {
+                case RUNNING:
+                    try {
+                        TimeUnit.MILLISECONDS.sleep(50);
+                        mGameEngine.nextStep();
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    break;
+                case PAUSED:
+                    break;
+                case FINISHED:
+                    return null;
+                default:
+                    break;
             }
         }
     }
