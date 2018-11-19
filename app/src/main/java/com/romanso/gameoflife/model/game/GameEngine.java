@@ -1,6 +1,8 @@
 package com.romanso.gameoflife.model.game;
 
 import android.annotation.SuppressLint;
+import android.os.AsyncTask;
+import android.util.Log;
 
 import com.romanso.gameoflife.model.asynctask.GameStepWaiterTask;
 import com.romanso.gameoflife.model.ds.Toroid;
@@ -8,9 +10,10 @@ import com.romanso.gameoflife.model.game.cell.BooleanCell;
 import com.romanso.gameoflife.model.game.cell.Cell;
 import com.romanso.gameoflife.model.game.figure.Figure;
 import com.romanso.gameoflife.model.game.figure.figureType.generator.GliderGun;
-import com.romanso.gameoflife.model.game.figure.figureType.spaceship.Glider;
 
 public class GameEngine {
+
+    private final static String TAG = GameEngine.class.getSimpleName();
 
     private Toroid<Cell> mField;
     private int mCells;
@@ -33,31 +36,11 @@ public class GameEngine {
         mField = new Toroid<>(y, x);
         mCells = mField.size();
 
-//        for (int i = 0; i < y; i++) {
-//            for (int j = 0; j < x; j++) {
-//                if (Math.random() <= fillPercentage) {
-//                    mField.set(i, j, new BooleanCell(true));
-//                    mLiveCells++;
-//                } else {
-//                    mField.set(i, j, new BooleanCell(false));
-//                }
-//            }
-//        }
-
         for (int i = 0; i < y; i++) {
             for (int j = 0; j < x; j++) {
                 mField.set(i, j, new BooleanCell(false));
             }
         }
-
-        Glider<BooleanCell> glider = new Glider<>(
-                new BooleanCell(true),
-                new BooleanCell(false)
-        );
-
-//        putFigure(glider, 0, 0);
-//        putFigure(glider, 0, 5);
-//        putFigure(glider, 0, 10);
 
         GliderGun<BooleanCell> gliderGun = new GliderGun<>(
                 new BooleanCell(true),
@@ -114,8 +97,11 @@ public class GameEngine {
     }
 
     public void start() {
+        Log.d(TAG, "Start");
         mState = GameState.RUNNING;
-        mGameStepWaiterTask.execute();
+        if (mGameStepWaiterTask.getStatus() != AsyncTask.Status.RUNNING) {
+            mGameStepWaiterTask.execute();
+        }
     }
 
     public void pause() {
@@ -164,8 +150,6 @@ public class GameEngine {
 
         mField = newField;
         mCells = mField.size();
-
-//        System.out.println("New field\n" + this);
     }
 
     private int countAliveNeighbours(int y, int x) {

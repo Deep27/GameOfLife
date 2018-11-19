@@ -17,4 +17,16 @@ public class GameEnginePresenter extends MvpPresenter<GameView> {
     public GameEngine getGameEngine() {
         return mGameEngine;
     }
+
+    public void start() {
+        mGameEngine.start();
+    }
+
+    public void pause() {
+        mGameEngine.pause();
+    }
+
+    public void resume() {
+        mGameEngine.resume();
+    }
 }

@@ -13,18 +13,14 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 
-import com.arellomobile.mvp.presenter.InjectPresenter;
-import com.arellomobile.mvp.presenter.ProvidePresenter;
 import com.romanso.gameoflife.R;
-import com.romanso.gameoflife.moxy.presenter.GameEnginePresenter;
-import com.romanso.gameoflife.moxy.view.GameView;
+import com.romanso.gameoflife.model.game.GameEngine;
 
-public class FieldView extends View implements GameView {
+public class FieldView extends View {
 
     private static final String TAG = FieldView.class.getName();
 
-    @InjectPresenter
-    GameEnginePresenter mGameEnginePresenter;
+    private GameEngine mGameEngine;
 
     private static final int LINE_THICKNESS = 1;
 
@@ -60,11 +56,6 @@ public class FieldView extends View implements GameView {
         countMetrics();
     }
 
-    @ProvidePresenter
-    GameEnginePresenter provideGameEnginePresenter() {
-        return new GameEnginePresenter(60);
-    }
-
     @Override
     public boolean onTouchEvent(MotionEvent event) {
 
@@ -86,6 +77,10 @@ public class FieldView extends View implements GameView {
         invalidate();
     }
 
+    public void setGameEngine(GameEngine gameEngine) {
+        mGameEngine = gameEngine;
+    }
+
     private void countMetrics() {
 
         DisplayMetrics dm = getContext().getResources().getDisplayMetrics();
@@ -101,20 +96,6 @@ public class FieldView extends View implements GameView {
                 mScreenWidth, mScreenHeight, mFieldSize, mCellSize));
     }
 
-    @Override
-    public void startGame() {
-        mGameEnginePresenter.getGameEngine().start();
-    }
-
-    @Override
-    public void pauseGame() {
-        mGameEnginePresenter.getGameEngine().pause();
-    }
-
-    @Override
-    public void resumeGame() {
-        mGameEnginePresenter.getGameEngine().resume();
-    }
 
     private void drawField(Canvas canvas) {
 
@@ -136,9 +117,10 @@ public class FieldView extends View implements GameView {
     }
 
     private void drawCells(Canvas canvas) {
-        for (int i = 0; i < mGameEnginePresenter.getGameEngine().getYSize(); i++) {
-            for (int j = 0; j < mGameEnginePresenter.getGameEngine().getXSize(); j++) {
-                if (mGameEnginePresenter.getGameEngine().isCellAlive(i, j)) {
+
+        for (int i = 0; i < mGameEngine.getYSize(); i++) {
+            for (int j = 0; j < mGameEngine.getXSize(); j++) {
+                if (mGameEngine.isCellAlive(i, j)) {
                     drawCell(canvas, i, j);
                 }
             }

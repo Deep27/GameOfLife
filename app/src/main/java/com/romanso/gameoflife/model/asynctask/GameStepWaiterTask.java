@@ -1,12 +1,15 @@
 package com.romanso.gameoflife.model.asynctask;
 
 import android.os.AsyncTask;
+import android.util.Log;
 
 import com.romanso.gameoflife.model.game.GameEngine;
 
 import java.util.concurrent.TimeUnit;
 
 public class GameStepWaiterTask extends AsyncTask<Void, Void, Void >{
+
+    private static final String TAG = GameStepWaiterTask.class.getSimpleName();
 
     private GameEngine mGameEngine;
 
@@ -17,11 +20,11 @@ public class GameStepWaiterTask extends AsyncTask<Void, Void, Void >{
     @Override
     protected void onPreExecute() {
         super.onPreExecute();
-        mGameEngine.start();
     }
 
     @Override
     protected Void doInBackground(Void... voids) {
+        Log.d(TAG, "doInBackground");
         while (true) {
             switch (mGameEngine.getGameState()) {
                 case RUNNING:
@@ -40,13 +43,5 @@ public class GameStepWaiterTask extends AsyncTask<Void, Void, Void >{
                     break;
             }
         }
-    }
-
-    public void pause() {
-        mGameEngine.pause();
-    }
-
-    public void resume() {
-        mGameEngine.resume();
     }
 }
