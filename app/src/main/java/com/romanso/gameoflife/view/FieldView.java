@@ -52,8 +52,6 @@ public class FieldView extends View {
         mCellPaint = new Paint();
         mCellPaint.setColor(Color.rgb(127, 127, 127));
         mCellPaint.setStrokeWidth(LINE_THICKNESS);
-
-        countMetrics();
     }
 
     @Override
@@ -64,8 +62,29 @@ public class FieldView extends View {
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        mHeight = View.MeasureSpec.getSize(heightMeasureSpec);
-        mWidth = View.MeasureSpec.getSize(widthMeasureSpec);
+
+        mHeight = (int) (MeasureSpec.getSize(heightMeasureSpec) * 0.95);
+        mWidth = (int) (MeasureSpec.getSize(widthMeasureSpec) * 0.95);
+
+        if (mHeight < mWidth) {
+            mWidth = mHeight;
+        } else {
+            mHeight = mWidth;
+        }
+
+        Log.d(TAG, String.format("FieldView height: %d, width: %d", mHeight, mWidth));
+
+        DisplayMetrics dm = getContext().getResources().getDisplayMetrics();
+
+        mScreenHeight = dm.heightPixels;
+        mScreenWidth = dm.widthPixels;
+
+        mCellSize = mScreenHeight < mScreenWidth
+                ? mScreenHeight / mFieldSize
+                : mScreenWidth / mFieldSize;
+
+        Log.d(TAG,  String.format("Screen width: %d\nScreen height: %d\nCells: %d\nCell size: %d",
+                mScreenWidth, mScreenHeight, mFieldSize, mCellSize));
 
         setMeasuredDimension(mWidth, mHeight);
     }
@@ -80,22 +99,6 @@ public class FieldView extends View {
     public void setGameEngine(GameEngine gameEngine) {
         mGameEngine = gameEngine;
     }
-
-    private void countMetrics() {
-
-        DisplayMetrics dm = getContext().getResources().getDisplayMetrics();
-
-        mScreenHeight = dm.heightPixels;
-        mScreenWidth = dm.widthPixels;
-
-        mCellSize = mScreenHeight < mScreenWidth
-                ? mScreenHeight / mFieldSize
-                : mScreenWidth / mFieldSize;
-
-        Log.d(TAG,  String.format("Screen width: %d\nScreen height: %d\nCells: %d\nCell size: %d",
-                mScreenWidth, mScreenHeight, mFieldSize, mCellSize));
-    }
-
 
     private void drawField(Canvas canvas) {
 
