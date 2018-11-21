@@ -24,12 +24,11 @@ public class FieldView extends View {
 
     private static final int LINE_THICKNESS = 1;
 
-    private int mScreenWidth;
-    private int mScreenHeight;
     private int mCellSize;
     private int mFieldSize;
 
     private int mWidth, mHeight;
+    private int mCellsY, mCellsX;
     private Paint mGridPaint;
     private Paint mCellPaint;
 
@@ -66,25 +65,18 @@ public class FieldView extends View {
         mHeight = (int) (MeasureSpec.getSize(heightMeasureSpec) * 0.95);
         mWidth = (int) (MeasureSpec.getSize(widthMeasureSpec) * 0.95);
 
+        mCellSize = mHeight < mWidth
+                ? mHeight / mFieldSize
+                : mWidth / mFieldSize;
+
         if (mHeight < mWidth) {
             mWidth = mHeight;
         } else {
             mHeight = mWidth;
         }
 
-        Log.d(TAG, String.format("FieldView height: %d, width: %d", mHeight, mWidth));
-
-        DisplayMetrics dm = getContext().getResources().getDisplayMetrics();
-
-        mScreenHeight = dm.heightPixels;
-        mScreenWidth = dm.widthPixels;
-
-        mCellSize = mScreenHeight < mScreenWidth
-                ? mScreenHeight / mFieldSize
-                : mScreenWidth / mFieldSize;
-
-        Log.d(TAG,  String.format("Screen width: %d\nScreen height: %d\nCells: %d\nCell size: %d",
-                mScreenWidth, mScreenHeight, mFieldSize, mCellSize));
+        Log.d(TAG,  String.format("Field width: %d\nField height: %d\nCells: %d\nCell size: %d",
+                mWidth, mHeight, mFieldSize, mCellSize));
 
         setMeasuredDimension(mWidth, mHeight);
     }
@@ -94,6 +86,11 @@ public class FieldView extends View {
         drawField(canvas);
         drawCells(canvas);
         invalidate();
+    }
+
+    public void setCellsAmount(int cellsY, int cellsX) {
+        mCellsY = cellsY;
+        mCellsX = cellsX;
     }
 
     public void setGameEngine(GameEngine gameEngine) {
