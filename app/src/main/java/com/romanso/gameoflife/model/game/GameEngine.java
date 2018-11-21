@@ -1,10 +1,7 @@
 package com.romanso.gameoflife.model.game;
 
 import android.annotation.SuppressLint;
-import android.os.AsyncTask;
-import android.util.Log;
 
-import com.romanso.gameoflife.model.asynctask.GameStepWaiterTask;
 import com.romanso.gameoflife.model.ds.Toroid;
 import com.romanso.gameoflife.model.game.cell.BooleanCell;
 import com.romanso.gameoflife.model.game.cell.Cell;
@@ -17,14 +14,12 @@ public class GameEngine {
 
     private Toroid<Cell> mField;
     private int mCells;
-    private int mLiveCells = 0;
+    private int mAliveCells = 0;
+    private int mMaxAliveCells = 0, mMaxDeadCells = 0;
     private GameState mState = GameState.INITIALIZING;
-
-    private GameStepWaiterTask mGameStepWaiterTask;
 
     public GameEngine(int size) {
         this (size, size, 0.15);
-        mGameStepWaiterTask = new GameStepWaiterTask(this);
     }
 
     public GameEngine(int y , int x, double fillPercentage) {
@@ -56,7 +51,7 @@ public class GameEngine {
 
         StringBuilder sb = new StringBuilder();
         sb.append(String.format("Cells: %d\nX cells: %d\nY cells: %d\nLive cells: %d\n",
-                mField.size(), mField.xSize(), mField.ySize(), mLiveCells));
+                mField.size(), mField.xSize(), mField.ySize(), mAliveCells));
 
         for (int i = 0; i < mField.ySize(); i++) {
             for (int j = 0; j < mField.xSize(); j++) {
@@ -84,24 +79,32 @@ public class GameEngine {
         return mField.xSize();
     }
 
+    public int getTotalCells() {
+        return mCells;
+    }
+
     public boolean isCellAlive(int y, int x) {
         return mField.get(y, x).isAlive();
     }
 
-    public int getLiveCells() {
-        return mLiveCells;
+    public int getAliveCells() {
+        return mAliveCells;
     }
 
     public int getDeadCells() {
-        return mCells - mLiveCells;
+        return mCells - mAliveCells;
+    }
+
+    public int getMaxAliveCells() {
+        return mMaxAliveCells;
+    }
+
+    public int getMaxDeadCells() {
+        return mMaxDeadCells;
     }
 
     public void start() {
-        Log.d(TAG, "Start");
         mState = GameState.RUNNING;
-        if (mGameStepWaiterTask.getStatus() != AsyncTask.Status.RUNNING) {
-            mGameStepWaiterTask.execute();
-        }
     }
 
     public void pause() {
@@ -121,7 +124,7 @@ public class GameEngine {
         Toroid<Cell> newField = new Toroid<>(mField.ySize(), mField.xSize());
 
         int aliveNeighbours;
-        mLiveCells = 0;
+        mAliveCells = 0;
 
         for (int i = 0; i < newField.ySize(); i++) {
             for (int j = 0; j < newField.xSize(); j++) {
@@ -135,17 +138,25 @@ public class GameEngine {
                         newField.set(i, j, new BooleanCell(false));
                     } else {
                         newField.set(i, j, new BooleanCell(true));
-                        mLiveCells++;
+                        mAliveCells++;
                     }
                 } else {
                     if (aliveNeighbours == 3) {
                         newField.set(i, j, new BooleanCell(true));
-                        mLiveCells++;
+                        mAliveCells++;
                     } else {
                         newField.set(i, j, new BooleanCell(false));
                     }
                 }
             }
+        }
+
+        if (mAliveCells > mMaxAliveCells) {
+            mMaxAliveCells = mAliveCells;
+        }
+
+        if (mCells - mAliveCells > mMaxDeadCells) {
+            mMaxDeadCells = mCells - mAliveCells;
         }
 
         mField = newField;
