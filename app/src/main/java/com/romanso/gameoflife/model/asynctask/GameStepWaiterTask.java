@@ -3,7 +3,7 @@ package com.romanso.gameoflife.model.asynctask;
 import android.os.AsyncTask;
 import android.util.Log;
 
-import com.romanso.gameoflife.model.game.GameEngine;
+import com.romanso.gameoflife.moxy.presenter.GameEnginePresenter;
 
 import java.util.concurrent.TimeUnit;
 
@@ -11,10 +11,10 @@ public class GameStepWaiterTask extends AsyncTask<Void, Void, Void >{
 
     private static final String TAG = GameStepWaiterTask.class.getSimpleName();
 
-    private GameEngine mGameEngine;
+    private GameEnginePresenter mGameEnginePresenter;
 
-    public GameStepWaiterTask(GameEngine gameEngine) {
-        mGameEngine = gameEngine;
+    public GameStepWaiterTask(GameEnginePresenter gameEnginePresenter) {
+        mGameEnginePresenter = gameEnginePresenter;
     }
 
     @Override
@@ -26,11 +26,11 @@ public class GameStepWaiterTask extends AsyncTask<Void, Void, Void >{
     protected Void doInBackground(Void... voids) {
         Log.d(TAG, "doInBackground");
         while (true) {
-            switch (mGameEngine.getGameState()) {
+            switch (mGameEnginePresenter.getGameEngine().getGameState()) {
                 case RUNNING:
                     try {
                         TimeUnit.MILLISECONDS.sleep(50);
-                        mGameEngine.nextStep();
+                        mGameEnginePresenter.getGameEngine().nextStep();
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
@@ -42,6 +42,13 @@ public class GameStepWaiterTask extends AsyncTask<Void, Void, Void >{
                 default:
                     break;
             }
+            publishProgress();
         }
+    }
+
+    @Override
+    protected void onProgressUpdate(Void... values) {
+        super.onProgressUpdate(values);
+        mGameEnginePresenter.updateStatisticsViews();
     }
 }

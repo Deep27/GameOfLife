@@ -2,6 +2,7 @@ package com.romanso.gameoflife.controller.activity;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.TextView;
 
 import com.arellomobile.mvp.MvpAppCompatActivity;
 import com.arellomobile.mvp.presenter.InjectPresenter;
@@ -19,6 +20,7 @@ public class MainActivity extends MvpAppCompatActivity implements GameView {
     GameEnginePresenter mGameEnginePresenter;
 
     private FieldView mFieldView;
+    private TextView mCellsTotalTV, mAliveCellsTV, mDeadCellsTV, mMaxAliveCellsTV, mMaxDeadCellsTV;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,6 +32,12 @@ public class MainActivity extends MvpAppCompatActivity implements GameView {
 
         mFieldView = findViewById(R.id.fieldview);
         mFieldView.setGameEngine(mGameEnginePresenter.getGameEngine());
+
+        mCellsTotalTV = findViewById(R.id.tv_cells_total);
+        mAliveCellsTV = findViewById(R.id.tv_cells_alive);
+        mDeadCellsTV = findViewById(R.id.tv_cells_dead);
+        mMaxAliveCellsTV = findViewById(R.id.tv_cells_alive_max);
+        mMaxDeadCellsTV = findViewById(R.id.tv_cells_dead_max);
     }
 
     @ProvidePresenter
@@ -67,5 +75,15 @@ public class MainActivity extends MvpAppCompatActivity implements GameView {
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
+    }
+
+    @Override
+    public void updateStatisticsViews(int totalCells, int aliveCells, int deadCells, int maxAliveCells,
+                                      int maxDeadCells) {
+        mCellsTotalTV.setText(String.valueOf(totalCells));
+        mAliveCellsTV.setText(String.valueOf(aliveCells));
+        mDeadCellsTV.setText(String.valueOf(deadCells));
+        mMaxAliveCellsTV.setText(String.valueOf(maxAliveCells));
+        mMaxDeadCellsTV.setText(String.valueOf(maxDeadCells));
     }
 }
