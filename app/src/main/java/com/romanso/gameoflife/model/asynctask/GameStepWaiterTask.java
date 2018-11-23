@@ -12,9 +12,16 @@ public class GameStepWaiterTask extends AsyncTask<Void, Void, Void >{
     private static final String TAG = GameStepWaiterTask.class.getSimpleName();
 
     private GameEnginePresenter mGameEnginePresenter;
+    private int mStepMillis;
 
     public GameStepWaiterTask(GameEnginePresenter gameEnginePresenter) {
         mGameEnginePresenter = gameEnginePresenter;
+        setStepMillis(50);
+    }
+
+    public GameStepWaiterTask(GameEnginePresenter gameEnginePresenter, int stepMillis) {
+        mGameEnginePresenter = gameEnginePresenter;
+        setStepMillis(stepMillis);
     }
 
     @Override
@@ -29,8 +36,9 @@ public class GameStepWaiterTask extends AsyncTask<Void, Void, Void >{
             switch (mGameEnginePresenter.getGameEngine().getGameState()) {
                 case RUNNING:
                     try {
-                        TimeUnit.MILLISECONDS.sleep(50);
-                        mGameEnginePresenter.getGameEngine().nextStep();
+                        publishProgress();
+                        TimeUnit.MILLISECONDS.sleep(mStepMillis);
+                        mGameEnginePresenter.nextStep();
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
@@ -42,7 +50,6 @@ public class GameStepWaiterTask extends AsyncTask<Void, Void, Void >{
                 default:
                     break;
             }
-            publishProgress();
         }
     }
 
@@ -50,5 +57,14 @@ public class GameStepWaiterTask extends AsyncTask<Void, Void, Void >{
     protected void onProgressUpdate(Void... values) {
         super.onProgressUpdate(values);
         mGameEnginePresenter.updateStatisticsViews();
+    }
+
+    public void setStepMillis(int stepMillis) {
+
+        if (stepMillis < 25) {
+            throw new IllegalArgumentException("Between steps should be >= 25 milliseconds!");
+        }
+
+        mStepMillis = stepMillis;
     }
 }
