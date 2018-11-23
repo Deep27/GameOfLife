@@ -18,31 +18,44 @@ public class GameEngine {
     private int mMaxAliveCells = 0, mMaxDeadCells = 0;
     private GameState mState = GameState.INITIALIZING;
 
-    public GameEngine(int size) {
-        this (size, size, 0.15);
-    }
+    public GameEngine(int ySize, int xSize) {
 
-    public GameEngine(int y , int x, double fillPercentage) {
-
-        if (fillPercentage < 0 || fillPercentage > 1) {
-            throw new IllegalArgumentException("Fill percentage must be in [0:1]!");
-        }
-
-        mField = new Toroid<>(y, x);
-        mCells = mField.size();
-
-        for (int i = 0; i < y; i++) {
-            for (int j = 0; j < x; j++) {
-                mField.set(i, j, new BooleanCell(false));
-            }
-        }
+        initEmptyField(ySize, xSize);
 
         GliderGun<BooleanCell> gliderGun = new GliderGun<>(
                 new BooleanCell(true),
                 new BooleanCell(false)
         );
+        putFigure(gliderGun, 15, 3);
+    }
 
-        putFigure(gliderGun, 25, 10);
+    public GameEngine(int ySize , int xSize, double fillPercentage) {
+
+        if (fillPercentage < 0 || fillPercentage > 1) {
+            throw new IllegalArgumentException("Fill percentage must be in [0:1]!");
+        }
+
+        initEmptyField(ySize, xSize);
+
+        for (int y = 0; y < ySize; y++) {
+            for (int x = 0; x < xSize; x++) {
+                if (Math.random() <= fillPercentage) {
+                    mField.set(y, x, new BooleanCell(true));
+                }
+            }
+        }
+    }
+
+    private void initEmptyField(int ySize, int xSize) {
+
+        mField = new Toroid<>(ySize, xSize);
+        mCells = mField.size();
+
+        for (int y = 0; y < ySize; y++) {
+            for (int x = 0; x < xSize; x++) {
+                mField.set(y, x, new BooleanCell(false));
+            }
+        }
     }
 
     @SuppressLint("DefaultLocale")
@@ -126,26 +139,26 @@ public class GameEngine {
         int aliveNeighbours;
         mAliveCells = 0;
 
-        for (int i = 0; i < newField.ySize(); i++) {
-            for (int j = 0; j < newField.xSize(); j++) {
+        for (int y = 0; y < newField.ySize(); y++) {
+            for (int x = 0; x < newField.xSize(); x++) {
 
-                BooleanCell currentCell = (BooleanCell) mField.get(i, j);
+                BooleanCell currentCell = (BooleanCell) mField.get(y, x);
 
-                aliveNeighbours = countAliveNeighbours(i, j);
+                aliveNeighbours = countAliveNeighbours(y, x);
 
                 if (currentCell.isAlive()) {
                     if (aliveNeighbours < 2 || aliveNeighbours > 3) {
-                        newField.set(i, j, new BooleanCell(false));
+                        newField.set(y, x, new BooleanCell(false));
                     } else {
-                        newField.set(i, j, new BooleanCell(true));
+                        newField.set(y, x, new BooleanCell(true));
                         mAliveCells++;
                     }
                 } else {
                     if (aliveNeighbours == 3) {
-                        newField.set(i, j, new BooleanCell(true));
+                        newField.set(y, x, new BooleanCell(true));
                         mAliveCells++;
                     } else {
-                        newField.set(i, j, new BooleanCell(false));
+                        newField.set(y, x, new BooleanCell(false));
                     }
                 }
             }
