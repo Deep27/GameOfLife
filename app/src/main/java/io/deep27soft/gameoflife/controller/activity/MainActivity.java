@@ -19,7 +19,6 @@ import io.deep27soft.gameoflife.view.FieldView;
 public class MainActivity extends MvpAppCompatActivity implements GameView {
 
     private static final String TAG = MainActivity.class.getSimpleName();
-    private static String KEY_PAUSED = "PAUSED_BY_USER";
 
     @InjectPresenter
     GameEnginePresenter mGameEnginePresenter;
@@ -66,47 +65,22 @@ public class MainActivity extends MvpAppCompatActivity implements GameView {
     protected void onResume() {
         Log.d(TAG, "onResume");
         super.onResume();
-
-        if (mPauseResumeBtn.getText().toString().equals(getString(R.string.pause))) {
-            mGameEnginePresenter.resume();
-        }
+        mGameEnginePresenter.resume();
+        mGameEnginePresenter.handlePauseResumeButtonState();
     }
 
     @Override
     protected void onPause() {
         Log.d(TAG, "onPause");
         super.onPause();
-
-        if (mPauseResumeBtn.getText().toString().equals(getString(R.string.pause))) {
-            mGameEnginePresenter.pause();
-        }
+        mGameEnginePresenter.pause();
+        mGameEnginePresenter.handlePauseResumeButtonState();
     }
 
     @Override
     protected void onStop() {
         Log.d(TAG, "onStop");
         super.onStop();
-    }
-
-    @Override
-    protected void onSaveInstanceState(Bundle outState) {
-        if (mPauseResumeBtn.getText().toString().equals(getString(R.string.pause))) {
-            outState.putBoolean(KEY_PAUSED, true);
-            return;
-        }
-        outState.putBoolean(KEY_PAUSED, false);
-        super.onSaveInstanceState(outState);
-    }
-
-    @Override
-    protected void onRestoreInstanceState(Bundle savedInstanceState) {
-        super.onRestoreInstanceState(savedInstanceState);
-
-        if (savedInstanceState != null) {
-            if (savedInstanceState.getBoolean(KEY_PAUSED)) {
-                mPauseResumeBtn.setText(getString(R.string.resume));
-            }
-        }
     }
 
     @SuppressLint("DefaultLocale")
@@ -120,18 +94,29 @@ public class MainActivity extends MvpAppCompatActivity implements GameView {
         mMaxDeadCellsTV.setText(String.format("%d (%.2f%%)", maxDeadCells, (double) maxDeadCells / totalCells * 100));
     }
 
+    @Override
+    public void setPauseResumeButtonState(boolean paused) {
+        if (paused) {
+            mPauseResumeBtn.setText(getString(R.string.pause));
+            return;
+        }
+        mPauseResumeBtn.setText(getString(R.string.resume));
+    }
+
     private void btnPauseResumeClickHandler(View v) {
 
         Button clickedBtn = (Button) v;
 
         switch (mGameEnginePresenter.getGameState()) {
             case RUNNING:
-                mGameEnginePresenter.pause();
-                clickedBtn.setText(getString(R.string.resume));
+                mGameEnginePresenter.pauseByUser();
+                mGameEnginePresenter.handlePauseResumeButtonState();
+//                clickedBtn.setText(getString(R.string.resume));
                 break;
             case PAUSED:
-                mGameEnginePresenter.resume();
-                clickedBtn.setText(getString(R.string.pause));
+                mGameEnginePresenter.resumeByUser();
+                mGameEnginePresenter.handlePauseResumeButtonState();
+//                clickedBtn.setText(getString(R.string.pause));
                 break;
             default:
                 break;

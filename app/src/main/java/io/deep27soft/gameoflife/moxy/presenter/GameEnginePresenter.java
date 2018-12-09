@@ -1,6 +1,7 @@
 package io.deep27soft.gameoflife.moxy.presenter;
 
 import android.os.AsyncTask;
+import android.util.Log;
 
 import com.arellomobile.mvp.InjectViewState;
 import com.arellomobile.mvp.MvpPresenter;
@@ -16,6 +17,8 @@ public class GameEnginePresenter extends MvpPresenter<GameView> {
 
     private GameEngine mGameEngine;
     private GameStepWaiterTask mGameStepWaiterTask;
+
+    private boolean mPausedByUser;
 
     public GameEnginePresenter(int ySize, int xSize) {
         mGameEngine = new GameEngine(ySize, xSize);
@@ -54,14 +57,44 @@ public class GameEnginePresenter extends MvpPresenter<GameView> {
     }
 
     public void start() {
-        mGameEngine.start();
+        if (!mPausedByUser) {
+            mGameEngine.start();
+        }
     }
 
     public void pause() {
-        mGameEngine.pause();
+        Log.d(TAG, "To pause?");
+        if (!mPausedByUser) {
+            Log.d(TAG, "Paused.");
+            mGameEngine.pause();
+        }
     }
 
     public void resume() {
+        Log.d(TAG, "To resume?");
+        if (!mPausedByUser) {
+            Log.d(TAG, "Resumed.");
+            mGameEngine.resume();
+        }
+    }
+
+    public void pauseByUser() {
+        Log.d(TAG, "Paused by user.");
+        mGameEngine.pause();
+        mPausedByUser = true;
+    }
+
+    public void resumeByUser() {
+        Log.d(TAG, "Resumed by user");
         mGameEngine.resume();
+        mPausedByUser = false;
+    }
+
+    public void handlePauseResumeButtonState() {
+        if (mPausedByUser) {
+            getViewState().setPauseResumeButtonState(false);
+            return;
+        }
+        getViewState().setPauseResumeButtonState(true);
     }
 }
