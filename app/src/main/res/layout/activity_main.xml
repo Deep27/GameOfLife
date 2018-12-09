@@ -81,7 +81,7 @@
 
     </LinearLayout>
 
-    <com.romanso.gameoflife.view.FieldView
+    <io.deep27soft.gameoflife.view.FieldView
         android:id="@+id/fieldview"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
