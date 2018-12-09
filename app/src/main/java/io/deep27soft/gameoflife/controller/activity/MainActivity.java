@@ -18,7 +18,8 @@ import io.deep27soft.gameoflife.view.FieldView;
 
 public class MainActivity extends MvpAppCompatActivity implements GameView {
 
-    private final static String TAG = MainActivity.class.getSimpleName();
+    private static final String TAG = MainActivity.class.getSimpleName();
+    private static String KEY_PAUSED = "PAUSED_BY_USER";
 
     @InjectPresenter
     GameEnginePresenter mGameEnginePresenter;
@@ -89,7 +90,23 @@ public class MainActivity extends MvpAppCompatActivity implements GameView {
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
+        if (mPauseResumeBtn.getText().toString().equals(getString(R.string.pause))) {
+            outState.putBoolean(KEY_PAUSED, true);
+            return;
+        }
+        outState.putBoolean(KEY_PAUSED, false);
         super.onSaveInstanceState(outState);
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+
+        if (savedInstanceState != null) {
+            if (savedInstanceState.getBoolean(KEY_PAUSED)) {
+                mPauseResumeBtn.setText(getString(R.string.resume));
+            }
+        }
     }
 
     @SuppressLint("DefaultLocale")
