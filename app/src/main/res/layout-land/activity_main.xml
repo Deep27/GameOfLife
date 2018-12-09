@@ -6,14 +6,24 @@
     android:layout_height="match_parent"
     tools:context=".controller.activity.MainActivity">
 
+    <io.deep27soft.gameoflife.view.FieldView
+        android:id="@+id/fieldview"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:size="40"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/ll_statistics"/>
+
     <LinearLayout
         android:id="@+id/ll_statistics"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/fieldview"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/ll_buttons"
+        app:layout_constraintStart_toEndOf="@id/fieldview"
         app:layout_constraintEnd_toEndOf="parent">
 
         <LinearLayout
@@ -81,24 +91,14 @@
 
     </LinearLayout>
 
-    <io.deep27soft.gameoflife.view.FieldView
-        android:id="@+id/fieldview"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:size="40"
-        app:layout_constraintTop_toBottomOf="@id/ll_statistics"
-        app:layout_constraintBottom_toTopOf="@id/ll_buttons"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
-
     <LinearLayout
         android:id="@+id/ll_buttons"
         android:orientation="horizontal"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/fieldview"
+        app:layout_constraintTop_toBottomOf="@id/ll_statistics"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toEndOf="@id/fieldview"
         app:layout_constraintEnd_toEndOf="parent">
 
         <Button
@@ -112,7 +112,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="pause"/>
-
     </LinearLayout>
 
 </android.support.constraint.ConstraintLayout>
