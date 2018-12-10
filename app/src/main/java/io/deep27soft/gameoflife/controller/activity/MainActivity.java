@@ -67,6 +67,7 @@ public class MainActivity extends MvpAppCompatActivity implements GameView {
         super.onResume();
         mGameEnginePresenter.resume();
         mGameEnginePresenter.handlePauseResumeButtonState();
+        mGameEnginePresenter.updateStatisticsViews();
     }
 
     @Override
@@ -105,18 +106,14 @@ public class MainActivity extends MvpAppCompatActivity implements GameView {
 
     private void btnPauseResumeClickHandler(View v) {
 
-        Button clickedBtn = (Button) v;
-
         switch (mGameEnginePresenter.getGameState()) {
             case RUNNING:
                 mGameEnginePresenter.pauseByUser();
                 mGameEnginePresenter.handlePauseResumeButtonState();
-//                clickedBtn.setText(getString(R.string.resume));
                 break;
             case PAUSED:
                 mGameEnginePresenter.resumeByUser();
                 mGameEnginePresenter.handlePauseResumeButtonState();
-//                clickedBtn.setText(getString(R.string.pause));
                 break;
             default:
                 break;
