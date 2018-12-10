@@ -8,8 +8,6 @@ import io.deep27soft.gameoflife.model.game.cell.Cell;
 import io.deep27soft.gameoflife.model.game.figure.Figure;
 import io.deep27soft.gameoflife.model.game.figure.figureType.generator.GliderGun;
 
-import io.deep27soft.gameoflife.model.game.figure.Figure;
-
 public class GameEngine {
 
     private final static String TAG = GameEngine.class.getSimpleName();
@@ -18,11 +16,14 @@ public class GameEngine {
     private int mCells;
     private int mAliveCells = 0;
     private int mMaxAliveCells = 0, mMaxDeadCells = 0;
+    private double mFillPercentage;
     private GameState mState = GameState.INITIALIZING;
 
     public GameEngine(int ySize, int xSize) {
 
         initEmptyField(ySize, xSize);
+
+        mFillPercentage = -1d;
 
         GliderGun<BooleanCell> gliderGun = new GliderGun<>(
                 new BooleanCell(true),
@@ -31,33 +32,15 @@ public class GameEngine {
         putFigure(gliderGun, 15, 3);
     }
 
-    public GameEngine(int ySize , int xSize, double fillPercentage) {
+    public GameEngine(int ySize, int xSize, double fillPercentage) {
 
         if (fillPercentage < 0 || fillPercentage > 1) {
-            throw new IllegalArgumentException("Fill percentage must be in [0:1]!");
+            throw new IllegalArgumentException("Fill percentage must be in (0:1)!");
         }
 
+        mFillPercentage = fillPercentage;
         initEmptyField(ySize, xSize);
-
-        for (int y = 0; y < ySize; y++) {
-            for (int x = 0; x < xSize; x++) {
-                if (Math.random() <= fillPercentage) {
-                    mField.set(y, x, new BooleanCell(true));
-                }
-            }
-        }
-    }
-
-    private void initEmptyField(int ySize, int xSize) {
-
-        mField = new Toroid<>(ySize, xSize);
-        mCells = mField.size();
-
-        for (int y = 0; y < ySize; y++) {
-            for (int x = 0; x < xSize; x++) {
-                mField.set(y, x, new BooleanCell(false));
-            }
-        }
+        fillFieldRandomly();
     }
 
     @SuppressLint("DefaultLocale")
@@ -76,6 +59,60 @@ public class GameEngine {
         }
 
         return sb.toString();
+    }
+
+    private void initEmptyField(int ySize, int xSize) {
+
+        mField = new Toroid<>(ySize, xSize);
+        mCells = mField.size();
+
+        mAliveCells = mMaxAliveCells = mMaxDeadCells = 0;
+
+        for (int y = 0; y < ySize; y++) {
+            for (int x = 0; x < xSize; x++) {
+                mField.set(y, x, new BooleanCell(false));
+            }
+        }
+    }
+
+    private void clearField() {
+
+        mAliveCells = mMaxAliveCells = mMaxDeadCells = 0;
+
+        for (int y = 0; y < mField.ySize(); y++) {
+            for (int x = 0; x < mField.xSize(); x++) {
+                mField.get(y, x).kill();
+            }
+        }
+    }
+
+    private void fillFieldRandomly() {
+
+        if (mFillPercentage == -1d) {
+            throw new IllegalStateException("Can't fill field randomly! Fill percentage was not set!");
+        }
+
+        mAliveCells = mMaxAliveCells = mMaxDeadCells = 0;
+
+        for (int y = 0; y < mField.ySize(); y++) {
+            for (int x = 0; x < mField.xSize(); x++) {
+                if (Math.random() <= mFillPercentage) {
+                    mField.get(y, x).revive();
+                    mAliveCells++;
+                    mMaxAliveCells++;
+                }
+            }
+        }
+
+        mMaxDeadCells = getDeadCells();
+    }
+
+    public void newGame() {
+        mState = GameState.INITIALIZING;
+        clearField();
+        if (mFillPercentage != -1) {
+            fillFieldRandomly();
+        }
     }
 
     public void putFigure(Figure f, int y, int x) {

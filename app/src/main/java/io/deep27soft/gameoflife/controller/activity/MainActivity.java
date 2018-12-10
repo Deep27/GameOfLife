@@ -47,6 +47,7 @@ public class MainActivity extends MvpAppCompatActivity implements GameView {
         mPauseResumeBtn = findViewById(R.id.btn_pause_resume);
         mPauseResumeBtn.setOnClickListener(this::btnPauseResumeClickHandler);
         mNewGameBtn = findViewById(R.id.btn_new_game);
+        mNewGameBtn.setOnClickListener(this::btnNewGameClickHandler);
     }
 
     @ProvidePresenter
@@ -66,7 +67,6 @@ public class MainActivity extends MvpAppCompatActivity implements GameView {
         Log.d(TAG, "onResume");
         super.onResume();
         mGameEnginePresenter.resume();
-        mGameEnginePresenter.handlePauseResumeButtonState();
         mGameEnginePresenter.updateStatisticsViews();
     }
 
@@ -75,7 +75,6 @@ public class MainActivity extends MvpAppCompatActivity implements GameView {
         Log.d(TAG, "onPause");
         super.onPause();
         mGameEnginePresenter.pause();
-        mGameEnginePresenter.handlePauseResumeButtonState();
     }
 
     @Override
@@ -109,14 +108,16 @@ public class MainActivity extends MvpAppCompatActivity implements GameView {
         switch (mGameEnginePresenter.getGameState()) {
             case RUNNING:
                 mGameEnginePresenter.pauseByUser();
-                mGameEnginePresenter.handlePauseResumeButtonState();
                 break;
             case PAUSED:
                 mGameEnginePresenter.resumeByUser();
-                mGameEnginePresenter.handlePauseResumeButtonState();
                 break;
             default:
                 break;
         }
+    }
+
+    private void btnNewGameClickHandler(View v) {
+        mGameEnginePresenter.newGame();
     }
 }
