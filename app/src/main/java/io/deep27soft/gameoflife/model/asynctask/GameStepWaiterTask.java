@@ -7,7 +7,7 @@ import io.deep27soft.gameoflife.moxy.presenter.GameEnginePresenter;
 
 import java.util.concurrent.TimeUnit;
 
-public class GameStepWaiterTask extends AsyncTask<Void, Void, Void >{
+public class GameStepWaiterTask extends AsyncTask<Void, Void, Void>{
 
     private static final String TAG = GameStepWaiterTask.class.getSimpleName();
 
@@ -34,6 +34,8 @@ public class GameStepWaiterTask extends AsyncTask<Void, Void, Void >{
         Log.d(TAG, "doInBackground");
         while (true) {
             switch (mGameEnginePresenter.getGameEngine().getGameState()) {
+                case INITIALIZING:
+                    break;
                 case RUNNING:
                     try {
                         publishProgress();

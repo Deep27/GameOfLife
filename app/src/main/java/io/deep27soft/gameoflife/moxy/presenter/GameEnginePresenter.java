@@ -52,6 +52,18 @@ public class GameEnginePresenter extends MvpPresenter<GameView> {
         return mGameEngine.getGameState();
     }
 
+    public void newGame() {
+        mGameEngine.newGame();
+        updateStatisticsViews();
+        if (mPausedByUser) {
+            mGameEngine.pause();
+            handlePauseResumeButtonState();
+            return;
+        }
+        mGameEngine.start();
+        handlePauseResumeButtonState();
+    }
+
     public void nextStep() {
         mGameEngine.nextStep();
     }
@@ -68,6 +80,7 @@ public class GameEnginePresenter extends MvpPresenter<GameView> {
             Log.d(TAG, "Paused.");
             mGameEngine.pause();
         }
+        handlePauseResumeButtonState();
     }
 
     public void resume() {
@@ -76,21 +89,24 @@ public class GameEnginePresenter extends MvpPresenter<GameView> {
             Log.d(TAG, "Resumed.");
             mGameEngine.resume();
         }
+        handlePauseResumeButtonState();
     }
 
     public void pauseByUser() {
         Log.d(TAG, "Paused by user.");
         mGameEngine.pause();
         mPausedByUser = true;
+        handlePauseResumeButtonState();
     }
 
     public void resumeByUser() {
         Log.d(TAG, "Resumed by user");
         mGameEngine.resume();
         mPausedByUser = false;
+        handlePauseResumeButtonState();
     }
 
-    public void handlePauseResumeButtonState() {
+    private void handlePauseResumeButtonState() {
         if (mPausedByUser) {
             getViewState().setPauseResumeButtonState(false);
             return;
